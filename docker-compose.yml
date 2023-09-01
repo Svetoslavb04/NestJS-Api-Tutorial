@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  dev-db:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: MySecretPass10
+      MYSQL_DB: nest-tutorial
+    networks:
+      - testNetwork
+networks:
+  testNetwork:
