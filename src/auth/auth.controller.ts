@@ -23,7 +23,9 @@ export class AuthController {
   }
 
   @Post('signin')
-  signin() {
+  async signin(@Body() dto: AuthDto) {
+    const user = await this.authService.signin(dto);
+
     return 'Sign in';
   }
 }
