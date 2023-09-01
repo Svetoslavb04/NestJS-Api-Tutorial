@@ -1,4 +1,10 @@
 {
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
   "singleQuote": true,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "explicitTypes": "preserve",
   "trailingComma": "all"
 }
