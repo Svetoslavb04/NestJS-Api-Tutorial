@@ -4,12 +4,14 @@ import { AuthDto } from './dto';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({})
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async signin(dto: AuthDto) {
@@ -29,9 +31,7 @@ export class AuthService {
       throw new ForbiddenException('Incorrect Credentials');
     }
 
-    delete user.hash;
-
-    return user;
+    return this.signToken(user.id, user.email, user.firstName, user.lastName);
   }
 
   async signup(dto: AuthDto) {
@@ -44,9 +44,29 @@ export class AuthService {
       },
     });
 
-    delete user.hash;
-    delete user.updatedAt;
+    return this.signToken(user.id, user.email, user.firstName, user.lastName);
+  }
 
-    return user;
+  async signToken(
+    id: number,
+    email: string,
+    firstName: string,
+    lastName: string,
+  ) {
+    const payload = {
+      sub: id,
+      email,
+      firstName,
+      lastName,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn: '15m',
+      secret: this.configService.get('JWT_SECRET'),
+    });
+
+    return {
+      access_token: token,
+    };
   }
 }
