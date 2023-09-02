@@ -21,10 +21,14 @@
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  
+## Intro
+
+Welcome to the Learning NestJS REST API repository! 🚀 This repository is a part of my journey into learning NestJS, a powerful Node.js framework that allows you to build scalable and maintainable REST APIs.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+In this project built with Nest.js, users can register and log in securely. Upon registration or login, users receive JWT (JSON Web Token) access tokens for authentication. Once authenticated, users can perform several bookmark-related actions, including creating new bookmarks with titles, URLs, and optional descriptions, editing existing bookmarks, and deleting their own bookmarks. Additionally, the API allows anyone to retrieve either a comprehensive list of bookmarks or a specific bookmark by providing its unique identifier.
 
 ## Installation
 
