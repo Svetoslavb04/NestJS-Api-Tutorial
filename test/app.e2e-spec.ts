@@ -5,6 +5,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 
 import * as pactum from 'pactum';
 import { AuthDto } from '../src/auth/dto';
+import { CreateBookmarkDto } from 'src/bookmark/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -149,13 +150,51 @@ describe('App e2e', () => {
 
   describe('Bookmarks', () => {
     describe('Create Bookmark', () => {
-      it.todo('should create bookmark');
+      const dto: CreateBookmarkDto = {
+        title: 'Best bookmark',
+        description: 'Very good description',
+        link: 'Invalid link',
+      };
+
+      it('should throw if title missing', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .post('/bookmark/create')
+          .withBody({ description: dto.description })
+          .expectStatus(400);
+      });
+
+      it('should create bookmark', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .post('/bookmark/create')
+          .withBody(dto)
+          .expectStatus(201);
+      });
     });
     describe('Get Bookmarks', () => {
-      it.todo('should get all bookmarks');
+      it('should get all bookmarks', () => {
+        return pactum
+          .spec()
+          .get('/bookmark/all')
+          .expectJsonLength(1)
+          .expectStatus(200);
+      });
     });
     describe('Get Bookmark by id', () => {
-      it.todo('should get bookmark by id');
+      it('should throw on invalid id', () => {
+        return pactum.spec().get('/bookmark/da1').expectStatus(400);
+      });
+
+      it('should get bookmark by id', () => {
+        return pactum.spec().get('/bookmark/1').expectStatus(200);
+      });
     });
     describe('Edit Bookmark', () => {
       it.todo('should edit bookmark');
