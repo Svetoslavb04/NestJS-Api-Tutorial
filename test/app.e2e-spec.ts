@@ -4,6 +4,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 
 import * as pactum from 'pactum';
+import { AuthDto } from '../src/auth/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -28,6 +29,8 @@ describe('App e2e', () => {
     prisma = app.get(PrismaService);
 
     await prisma.cleanDb();
+
+    pactum.request.setBaseUrl('http://localhost:3333');
   });
 
   afterAll(async () => {
@@ -36,7 +39,18 @@ describe('App e2e', () => {
 
   describe('Auth', () => {
     describe('Signup', () => {
-      it.todo('should signup');
+      it('should signup', async () => {
+        const dto: AuthDto = {
+          email: 'gmail@gmail.com',
+          password: '123',
+        };
+
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody(dto)
+          .expectStatus(201);
+      });
     });
     describe('Signin', () => {
       it.todo('should signin');
