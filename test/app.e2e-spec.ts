@@ -5,7 +5,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 
 import * as pactum from 'pactum';
 import { AuthDto } from '../src/auth/dto';
-import { CreateBookmarkDto } from 'src/bookmark/dto';
+import { CreateBookmarkDto, EditBookmarkDto } from '../src/bookmark/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -175,7 +175,8 @@ describe('App e2e', () => {
           })
           .post('/bookmark/create')
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('bookmarkId', 'id');
       });
     });
     describe('Get Bookmarks', () => {
@@ -193,14 +194,107 @@ describe('App e2e', () => {
       });
 
       it('should get bookmark by id', () => {
-        return pactum.spec().get('/bookmark/1').expectStatus(200);
+        return pactum
+          .spec()
+          .get('/bookmark/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
       });
     });
     describe('Edit Bookmark', () => {
-      it.todo('should edit bookmark');
+      const dto: EditBookmarkDto = {
+        title: 'Best bookmarkkkk',
+        description: 'Very good description',
+        link: 'Invalid link',
+      };
+
+      it('should throw on invalid id', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .patch('/bookmark/dsa2')
+          .expectStatus(400);
+      });
+
+      it('should throw if book does not exist', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .patch('/bookmark/9999')
+          .expectStatus(400);
+      });
+
+      it('should throw if not owner tries to edit', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}dda',
+          })
+          .patch('/bookmark/1')
+          .withBody(dto)
+          .expectStatus(401);
+      });
+
+      it('should edit bookmark', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .patch('/bookmark/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
+      });
     });
     describe('Delete Bookmark', () => {
-      it.todo('should delete bookmark by id');
+      it('should throw on invalid id', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .delete('/bookmark/dsa2')
+          .expectStatus(400);
+      });
+
+      it('should throw if book does not exist', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .delete('/bookmark/9999')
+          .expectStatus(400);
+      });
+
+      it('should throw if not owner tries to delete', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}dda',
+          })
+          .delete('/bookmark/1')
+          .expectStatus(401);
+      });
+
+      it('should delete bookmark', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .delete('/bookmark/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
+      });
     });
   });
 });
