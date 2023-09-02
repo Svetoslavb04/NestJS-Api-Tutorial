@@ -6,6 +6,18 @@ import { CreateBookmarkDto } from './dto';
 export class BookmarkService {
   constructor(private prisma: PrismaService) {}
 
+  getAll() {
+    return this.prisma.bookmark.findMany();
+  }
+
+  getById(id: number) {
+    return this.prisma.bookmark.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async createBookmark(userId: number, dto: CreateBookmarkDto) {
     const bookmark = await this.prisma.bookmark.create({
       data: {
