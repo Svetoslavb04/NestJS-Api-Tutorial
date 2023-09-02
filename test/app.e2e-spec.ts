@@ -106,14 +106,27 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signin')
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('userAt', 'access_token');
       });
     });
   });
 
   describe('User', () => {
     describe('Me', () => {
-      it.todo('should get me information');
+      it('should throw if no token is provided', () => {
+        return pactum.spec().get('/users/me').expectStatus(401);
+      });
+
+      it('should get me information', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .get('/users/me')
+          .expectStatus(200);
+      });
     });
   });
 
