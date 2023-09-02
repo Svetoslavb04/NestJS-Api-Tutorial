@@ -44,6 +44,30 @@ describe('App e2e', () => {
     };
 
     describe('Signup', () => {
+      it('should throw on empty email', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({ password: dto.password })
+          .expectStatus(400);
+      });
+
+      it('should throw on empty email', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({ email: dto.email })
+          .expectStatus(400);
+      });
+
+      it('should throw if body is empty', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({})
+          .expectStatus(400);
+      });
+
       it('should signup', async () => {
         return pactum
           .spec()
@@ -53,6 +77,30 @@ describe('App e2e', () => {
       });
     });
     describe('Signin', () => {
+      it('should throw on empty email', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({ password: dto.password })
+          .expectStatus(400);
+      });
+
+      it('should throw on empty email', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({ email: dto.email })
+          .expectStatus(400);
+      });
+
+      it('should throw if body is empty', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({})
+          .expectStatus(400);
+      });
+
       it('should signin', async () => {
         return pactum
           .spec()
