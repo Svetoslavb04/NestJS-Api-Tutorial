@@ -13,6 +13,11 @@
     "db:dev:up": "docker compose up dev-db -d",
     "db:dev:start": "docker start nestjs-api-tutorial-dev-db-1",
     "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && timeout /t 10 && npm run prisma:dev:deploy",
+    "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
+    "db:test:rm": "docker compose rm test-db -s -v -f",
+    "db:test:up": "docker compose up test-db -d",
+    "db:test:start": "docker start nestjs-api-tutorial-test-db-1",
+    "db:test:restart": "npm run db:test:rm && npm run db:test:up && timeout /t 10 && npm run prisma:test:deploy",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -22,7 +27,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --watch --no-cache --config ./test/jest-e2e.json"
+    "pretest:e2e": "npm run db:test:restart",
+    "test:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -51,6 +57,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

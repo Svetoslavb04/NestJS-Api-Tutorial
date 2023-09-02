@@ -9,5 +9,14 @@ services:
       MYSQL_DB: nest-tutorial
     networks:
       - testNetwork
+  test-db:
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: MySecretPass10
+      MYSQL_DB: nest-tutorial
+    networks:
+      - testNetwork
 networks:
   testNetwork:
