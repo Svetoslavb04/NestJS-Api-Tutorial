@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prisma:dev:deploy": "prisma migrate deploy",
     "db:dev:rm": "docker compose rm dev-db -s -v -f",
-    "db:dev:up": "docker compose up dev-db",
+    "db:dev:up": "docker compose up dev-db -d",
     "db:dev:start": "docker start nestjs-api-tutorial-dev-db-1",
     "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up",
     "start": "nest start",
