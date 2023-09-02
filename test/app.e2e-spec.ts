@@ -38,13 +38,13 @@ describe('App e2e', () => {
   });
 
   describe('Auth', () => {
+    const dto: AuthDto = {
+      email: 'gmail@gmail.com',
+      password: '123',
+    };
+
     describe('Signup', () => {
       it('should signup', async () => {
-        const dto: AuthDto = {
-          email: 'gmail@gmail.com',
-          password: '123',
-        };
-
         return pactum
           .spec()
           .post('/auth/signup')
@@ -53,7 +53,13 @@ describe('App e2e', () => {
       });
     });
     describe('Signin', () => {
-      it.todo('should signin');
+      it('should signin', async () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody(dto)
+          .expectStatus(201);
+      });
     });
   });
 
