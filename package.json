@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "db:dev:rm": "docker compose rm dev-db -s -v -f",
+    "db:dev:up": "docker compose up dev-db",
     "db:dev:start": "docker start nestjs-api-tutorial-dev-db-1",
     "start": "nest start",
     "start:dev": "nest start --watch",
