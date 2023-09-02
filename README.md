@@ -32,9 +32,14 @@
 $ npm install
 ```
 
+Fill the required environment variables, fill in `.env.example` and rename it to `.env`
+
 ## Running the app
 
 ```bash
+# run database docker service
+$ npm run db:dev:restart
+
 # development
 $ npm run start
 
