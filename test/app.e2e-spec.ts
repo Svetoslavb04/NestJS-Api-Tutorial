@@ -128,6 +128,23 @@ describe('App e2e', () => {
           .expectStatus(200);
       });
     });
+
+    describe('Edit User', () => {
+      it('should update user by id', () => {
+        return pactum
+          .spec()
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody({
+            email: 's@gmail.com',
+            firstName: 's',
+            lastName: 'b',
+          })
+          .patch('/users/edit')
+          .expectStatus(200);
+      });
+    });
   });
 
   describe('Bookmarks', () => {
